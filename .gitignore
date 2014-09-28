@@ -50,7 +50,6 @@ proguard/
 
 #Eclipse files
 *.pydevproject
-.project
 .metadata
 bin/**
 tmp/**

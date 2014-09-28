@@ -1,5 +1,6 @@
 package turkycat.productions.dangerzone.gameloop;
 
-public class GameLooperAsync extends GameLooper {
+public class GameLooperAsync extends GameLooper
+{
 
 }
