@@ -1,5 +1,5 @@
 package turkycat.productions.dangerzone.gameloop;
 
-public class GameObjectUpdater {
+public class GameUpdater {
 
 }

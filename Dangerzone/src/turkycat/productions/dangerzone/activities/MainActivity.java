@@ -5,9 +5,11 @@ import turkycat.productions.dangerzone.R.id;
 import turkycat.productions.dangerzone.R.layout;
 import turkycat.productions.dangerzone.R.menu;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -16,7 +18,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
+        
+        Typeface titleFont = Typeface.createFromAsset( getAssets(), "fonts/game.ttf" );
+		TextView title = (TextView) findViewById( R.id.game_title );
+		title.setTypeface( titleFont );
+        }
 
 
     @Override

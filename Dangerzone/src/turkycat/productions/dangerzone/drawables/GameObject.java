@@ -1,4 +1,4 @@
-package turkcat.productions.dangerzone.drawables;
+package turkycat.productions.dangerzone.drawables;
 
 import android.graphics.Point;
 
@@ -14,6 +14,7 @@ public abstract class GameObject
 		currentPosition = new Point( p.x, p.y );
 	}
 	
+	
 	/**
 	 * retrieves the current position of this item
 	 * @return a copy of the current position
@@ -23,4 +24,9 @@ public abstract class GameObject
 		return new Point( currentPosition.x, currentPosition.y );
 	}
 	
+	
+	/**
+	 * tells the object to update itself based on a number of units
+	 */
+	public abstract void update( float units );
 }
