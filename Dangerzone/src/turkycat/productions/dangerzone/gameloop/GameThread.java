@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import turkycat.productions.dangerzone.ApplicationResources;
+import turkycat.productions.dangerzone.objects.BackgroundGameObject;
 import turkycat.productions.dangerzone.objects.BasicGameObject;
 import turkycat.productions.dangerzone.objects.DrawableItem;
 import turkycat.productions.dangerzone.objects.GameObject;
@@ -20,8 +21,8 @@ public class GameThread extends Thread
 {
 	private static final String TAG = "GameThread";
 
+	private volatile boolean running;
 	private GameUpdater updater;
-	private boolean running;
 	private SurfaceHolder surfaceHolder;
 	private GameView gameView;
 	private long lastGameUpdate;
@@ -36,19 +37,20 @@ public class GameThread extends Thread
 		this.gameView = gameView;
 		this.drawables = new LinkedList<DrawableItem>();
 
-		BasicGameObject background = new BasicGameObject( ApplicationResources.i().getBitmap( "background" ), //the image bitmap of the background
-		new PointF( 0f, 0f ), //the location relative to the upper left corner (0,0)
-		new PointF( gameView.getWidth(), gameView.getHeight() ), //the width of the background should be equal to the size of our view
-		false, //not collidable
-		true, //moves relative to the world only
-		-Consts.INITIAL_GAME_SPEED, //X speed
-		0f ); //Y speed
-		BasicGameObject background2 = (BasicGameObject) background.clone();
-		background2.setLocation( new PointF( gameView.getWidth(), 0f ) );
+//		BasicGameObject background = new BasicGameObject( ApplicationResources.i().getBitmap( "background" ), //the image bitmap of the background
+//				new PointF( 0f, 0f ), //the location relative to the upper left corner (0,0)
+//				new PointF( gameView.getWidth(), gameView.getHeight() ), //the width of the background should be equal to the size of our view
+//				false, //not collidable
+//				true, //moves relative to the world only
+//				-Consts.INITIAL_GAME_SPEED, //X speed
+//				0f ); //Y speed
+//		BasicGameObject background2 = (BasicGameObject) background.clone();
+//		background2.setLocation( new PointF( gameView.getWidth(), 0f ) );
+		BackgroundGameObject background = new BackgroundGameObject( gameView.getWidth(), gameView.getHeight() );
 		updater.addObject( background );
-		updater.addObject( background2 );
+//		updater.addObject( background2 );
 		drawables.add( background );
-		drawables.add( background2 );
+//		drawables.add( background2 );
 		Log.d( TAG, "finished thread constructor" );
 	}
 

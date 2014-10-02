@@ -8,14 +8,14 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
 
-public class BasicGameObject extends GameObject implements Cloneable
+public class BasicGameObject extends GameObject
 {
 	public static final String TAG = "BasicGameObject";
-	private Bitmap bitmap;
-	private boolean isCollidable;
-	private boolean isStatic;
-	private float velocityX;
-	private float velocityY;
+	protected Bitmap bitmap;
+	protected boolean isCollidable;
+	protected boolean isStatic;
+	protected float velocityX;
+	protected float velocityY;
 
 	public BasicGameObject( PointF location, PointF dimensions, boolean isCollidable, boolean isStatic )
 	{

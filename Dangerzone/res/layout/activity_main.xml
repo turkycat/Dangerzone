@@ -20,11 +20,15 @@
         android:lines="1"
         android:textColor="@android:color/white" />
     
-    <Button 
+    <ImageButton 
         android:id="@+id/launch_game_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/play"
+        android:contentDescription="@string/content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:text="@string/play"
         android:textSize="20sp"
