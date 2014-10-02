@@ -55,12 +55,12 @@ public class BasicGameObject extends GameObject
 		this.velocityX = velocityX;
 		this.velocityY = velocityY;
 	}
-	
+
 	public void setVelocityX( float velocity )
 	{
 		this.velocityX = velocity;
 	}
-	
+
 	public void setVelocityY( float velocity )
 	{
 		this.velocityX = velocity;
@@ -89,24 +89,21 @@ public class BasicGameObject extends GameObject
 	@Override
 	public void draw( Canvas canvas )
 	{
-		synchronized( this )
-		{
-			if( bitmap == null ) return;
-			canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) ( location.x + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
-		}
+		if( bitmap == null ) return;
+		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) ( location.x + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
 	}
 
 	@Override
 	public Object clone()
 	{
 		BasicGameObject o = (BasicGameObject) super.clone();
-		
+
 		o.bitmap = this.bitmap;
 		o.isCollidable = this.isCollidable;
 		o.isStatic = this.isStatic;
 		o.velocityX = this.velocityX;
 		o.velocityY = this.velocityY;
-		
+
 		return o;
 	}
 }

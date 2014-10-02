@@ -19,7 +19,8 @@ public class BackgroundGameObject extends BasicGameObject
 				new PointF( viewWidth, viewHeight ), //the width of the background should be equal to the size of our view
 				false, //not collidable
 				true, //moves relative to the world only
-				-Consts.INITIAL_GAME_SPEED, //X speed
+				0f, //X speed
+//				-Consts.INITIAL_GAME_SPEED, //X speed
 				0f ); //Y speed
 		this.viewWidth = viewWidth;
 		this.viewHeight = viewHeight;
@@ -29,6 +30,7 @@ public class BackgroundGameObject extends BasicGameObject
 	public boolean update( float units )
 	{
 		super.update( units );
+		velocityX -= 0.01f;
 		if( location.x < -viewWidth )
 		{
 			location = new PointF( location.x + viewWidth, location.y );
@@ -44,7 +46,7 @@ public class BackgroundGameObject extends BasicGameObject
 		{
 			if( bitmap == null ) return;
 			canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) ( location.x + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
-			canvas.drawBitmap( bitmap, null, new Rect( (int) location.x + viewWidth, (int) location.y, (int) ( location.x + viewWidth + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
+			canvas.drawBitmap( bitmap, null, new Rect( (int) (location.x + viewWidth), (int) location.y, (int) ( location.x + viewWidth + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
 		}
 	}
 }
