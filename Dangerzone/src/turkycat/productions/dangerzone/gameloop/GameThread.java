@@ -44,6 +44,8 @@ public class GameThread extends Thread
 						Consts.INITIAL_GAME_SPEED,					//X speed
 						0f );										//Y speed
 		updater.addObject( background );
+		drawables.add( background );
+		Log.d( TAG, "finished thread constructor" );
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class GameThread extends Thread
 	{
 		lastGameUpdate = System.currentTimeMillis();
 		double loopcount = 0.0;
-		DecimalFormat fmt = new DecimalFormat( "##,###,###,###,###,###,#,##0." );
+		DecimalFormat fmt = new DecimalFormat( "##,###,###,###,###,###,###,##0" );
 
 		while( running )
 		{
@@ -59,9 +61,9 @@ public class GameThread extends Thread
 			long currentTime = System.currentTimeMillis();
 			long elapsed = currentTime - lastGameUpdate;
 			lastGameUpdate = currentTime;
-			Log.i( TAG, String.format( "game loop executing for the %fth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
+			Log.i( TAG, String.format( "game loop executing for the %sth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
 			updater.update( elapsed / Consts.MILLIS_PER_TIME_UNIT );
-
+			paint();
 		}
 	}
 

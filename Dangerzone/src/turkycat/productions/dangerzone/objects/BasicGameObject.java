@@ -2,12 +2,15 @@ package turkycat.productions.dangerzone.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class BasicGameObject extends GameObject
 {
+	public static final String TAG = "BasicGameObject";
 	private Bitmap bitmap;
 	private PointF location;
 	private PointF dimensions;
@@ -46,8 +49,7 @@ public class BasicGameObject extends GameObject
 	{
 		if( bitmap == null ) throw new IllegalArgumentException( "cannot have null bitmap, use a different constructor" );
 		
-
-		this.bitmap = null;
+		this.bitmap = bitmap;
 		this.location = new PointF( location.x, location.y );
 		this.dimensions = new PointF( dimensions.x, dimensions.y );
 		this.isCollidable = isCollidable;
@@ -90,8 +92,9 @@ public class BasicGameObject extends GameObject
 	@Override
 	public void draw( Canvas canvas )
 	{
+		Log.d( TAG, "draw called null? " + (bitmap == null ? "#t" : "#f" ) );
 		if( bitmap == null ) return;
-		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) (location.x + dimensions.x), (int) (location.y + dimensions.y) ), null ); 
+		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) (location.x + dimensions.x), (int) (location.y + dimensions.y) ), new Paint() );
 	}
 
 }

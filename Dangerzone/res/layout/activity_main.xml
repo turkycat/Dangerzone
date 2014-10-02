@@ -19,5 +19,16 @@
         android:fitsSystemWindows="true"
         android:lines="1"
         android:textColor="@android:color/white" />
+    
+    <Button 
+        android:id="@+id/launch_game_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:text="@string/play"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:onClick="launchGameActivity" />
 
 </RelativeLayout>

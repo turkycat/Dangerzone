@@ -3,15 +3,18 @@ package turkycat.productions.dangerzone.views;
 import turkycat.productions.dangerzone.gameloop.GameThread;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
+	public static final String TAG = "GameView";
 	private GameThread thread;
 
-	public GameView( Context context )
+	public GameView( Context context, AttributeSet attrSet)
 	{
 		super( context );
 
@@ -22,8 +25,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated( SurfaceHolder holder )
 	{
+		Log.d( TAG, "reached surface created" );
 		thread = new GameThread( holder, this );
 		thread.start();
+		Log.d( TAG, "thread started" );
 	}
 
 	@Override
@@ -36,6 +41,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceDestroyed( SurfaceHolder holder )
 	{
 		boolean retry = true;
+		thread.exit();
 		while( retry )
 		{
 			try
