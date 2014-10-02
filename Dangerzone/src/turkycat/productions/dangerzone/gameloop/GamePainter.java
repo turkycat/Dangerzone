@@ -1,5 +1,6 @@
 package turkycat.productions.dangerzone.gameloop;
 
-public class GameObjectPainter {
 
+public class GamePainter
+{
 }

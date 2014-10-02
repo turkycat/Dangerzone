@@ -1,9 +1,9 @@
-package turkycat.productions.dangerzone.drawables;
+package turkycat.productions.dangerzone.objects;
 
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-public abstract class DrawableItem extends GameObject
+public interface DrawableItem
 {
 	public abstract void draw( Canvas canvas );
 }
