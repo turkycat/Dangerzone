@@ -35,15 +35,14 @@ public class GameThread extends Thread
 		this.surfaceHolder = surfaceHolder;
 		this.gameView = gameView;
 		this.drawables = new LinkedList<DrawableItem>();
-		
-		BasicGameObject background = new BasicGameObject(
-				ApplicationResources.i().getBitmap( "background" ),	//the image bitmap of the background
-				new PointF( 0f, 0f ),								//the location relative to the upper left corner (0,0)
-				new PointF( gameView.getWidth(), gameView.getHeight() ),	//the width of the background should be equal to the size of our view
-						false,										//not collidable
-						true,										//moves relative to the world only
-						-Consts.INITIAL_GAME_SPEED,					//X speed
-						0f );										//Y speed
+
+		BasicGameObject background = new BasicGameObject( ApplicationResources.i().getBitmap( "background" ), //the image bitmap of the background
+		new PointF( 0f, 0f ), //the location relative to the upper left corner (0,0)
+		new PointF( gameView.getWidth(), gameView.getHeight() ), //the width of the background should be equal to the size of our view
+		false, //not collidable
+		true, //moves relative to the world only
+		-Consts.INITIAL_GAME_SPEED, //X speed
+		0f ); //Y speed
 		BasicGameObject background2 = (BasicGameObject) background.clone();
 		background2.setLocation( new PointF( gameView.getWidth(), 0f ) );
 		updater.addObject( background );
@@ -60,22 +59,29 @@ public class GameThread extends Thread
 		double loopcount = 0.0;
 		DecimalFormat fmt = new DecimalFormat( "##,###,###,###,###,###,###,##0" );
 
-		while( running )
+		try
 		{
-			loopcount++;
-			long currentTime = System.currentTimeMillis();
-			long elapsed = currentTime - lastGameUpdate;
-			lastGameUpdate = currentTime;
-			Log.i( TAG, String.format( "game loop executing for the %sth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
-			updater.update( ((float)elapsed) / Consts.MILLIS_PER_TIME_UNIT );
-			paint();
+			while( running )
+			{
+				loopcount++;
+				long currentTime = System.currentTimeMillis();
+				long elapsed = currentTime - lastGameUpdate;
+				lastGameUpdate = currentTime;
+				Log.i( TAG, String.format( "game loop executing for the %sth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
+				updater.update( ( (float) elapsed ) / Consts.MILLIS_PER_TIME_UNIT );
+				paint();
+			}
+		}
+		catch( Exception e )
+		{
+			exit();
 		}
 	}
 
 	public void paint()
 	{
 		Canvas canvas = null;
-		
+
 		canvas = surfaceHolder.lockCanvas();
 		canvas.drawColor( Color.BLACK );
 		Iterator<DrawableItem> iterator = drawables.iterator();
