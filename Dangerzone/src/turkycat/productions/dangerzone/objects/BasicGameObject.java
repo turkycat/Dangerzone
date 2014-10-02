@@ -8,12 +8,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.Log;
 
-public class BasicGameObject extends GameObject
+public class BasicGameObject extends GameObject implements Cloneable
 {
 	public static final String TAG = "BasicGameObject";
 	private Bitmap bitmap;
-	private PointF location;
-	private PointF dimensions;
 	private boolean isCollidable;
 	private boolean isStatic;
 	private float velocityX;
@@ -61,20 +59,9 @@ public class BasicGameObject extends GameObject
 	@Override
 	public boolean update( float units )
 	{
-		location = new PointF( location.x * ( velocityX * units ), location.y * ( velocityY * units ) );
+		location.set( new PointF( location.x + ( velocityX * units ), location.y + ( velocityY * units ) ) );
+//		Log.d( TAG, String.format( "units: %f, velocityX: %f |*|: %f", units, velocityX, (velocityX * units) ) );
 		return true;
-	}
-
-	@Override
-	public PointF getLocation()
-	{
-		return new PointF( location.x, location.y );
-	}
-
-	@Override
-	public PointF getDimensions()
-	{
-		return new PointF( dimensions.x, dimensions.y );
 	}
 
 	@Override
@@ -92,9 +79,26 @@ public class BasicGameObject extends GameObject
 	@Override
 	public void draw( Canvas canvas )
 	{
-		Log.d( TAG, "draw called null? " + (bitmap == null ? "#t" : "#f" ) );
+		synchronized( this )
+		{
 		if( bitmap == null ) return;
 		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) (location.x + dimensions.x), (int) (location.y + dimensions.y) ), new Paint() );
+		}
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		BasicGameObject o = (BasicGameObject) super.clone();
+		
+		o.bitmap = this.bitmap;
+		o.location = new PointF( this.location.x, this.location.y );
+		o.dimensions = new PointF( this.dimensions.x, this.dimensions.y );
+		o.isCollidable = this.isCollidable;
+		o.isStatic = this.isStatic;
+		o.velocityX = this.velocityX;
+		o.velocityY = this.velocityY;
+		
+		return o;
+	}
 }

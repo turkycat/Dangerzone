@@ -25,7 +25,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated( SurfaceHolder holder )
 	{
-		Log.d( TAG, "reached surface created" );
 		thread = new GameThread( holder, this );
 		thread.start();
 		Log.d( TAG, "thread started" );
