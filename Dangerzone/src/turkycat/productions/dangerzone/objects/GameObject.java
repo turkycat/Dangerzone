@@ -1,17 +1,18 @@
 package turkycat.productions.dangerzone.objects;
 
-import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.util.Log;
 
-public abstract class GameObject implements DrawableItem
+public abstract class GameObject implements DrawableItem, Cloneable
 {
+	public static final String TAG = "GameObject";
 	protected PointF location;
 	protected PointF dimensions;
 	
 	/**
 	 * sets the current position to a copy of the given point
 	 */
-	public void setPosition( PointF p )
+	public void setLocation( PointF p )
 	{
 		location = new PointF( p.x, p.y );
 	}
@@ -29,7 +30,7 @@ public abstract class GameObject implements DrawableItem
 	/**
 	 * returns the object's height and width
 	 */
-	public abstract PointF getDimensions()
+	public PointF getDimensions()
 	{
 		return new PointF( dimensions.x, dimensions.y );
 	}
@@ -49,4 +50,25 @@ public abstract class GameObject implements DrawableItem
 	 * returns true if the object will never move
 	 */
 	public abstract boolean isStatic();
+	
+	@Override
+	public Object clone()
+	{
+		GameObject o = null;
+		
+		try
+		{
+		o = (GameObject) super.clone();
+		
+		o.location = new PointF( this.location.x, this.location.y );
+		o.dimensions = new PointF( this.dimensions.x, this.dimensions.y );
+		
+		}
+		catch( CloneNotSupportedException e )
+		{
+			Log.d( TAG, "threw CloneNotSupportedException" );
+		}
+		
+		return o;
+	}
 }

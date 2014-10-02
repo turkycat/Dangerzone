@@ -45,8 +45,11 @@ public class GameThread extends Thread
 						-Consts.INITIAL_GAME_SPEED,					//X speed
 						0f );										//Y speed
 		BasicGameObject background2 = (BasicGameObject) background.clone();
+		background2.setLocation( new PointF( gameView.getWidth(), 0f ) );
 		updater.addObject( background );
+		updater.addObject( background2 );
 		drawables.add( background );
+		drawables.add( background2 );
 		Log.d( TAG, "finished thread constructor" );
 	}
 
@@ -63,7 +66,7 @@ public class GameThread extends Thread
 			long currentTime = System.currentTimeMillis();
 			long elapsed = currentTime - lastGameUpdate;
 			lastGameUpdate = currentTime;
-			//Log.i( TAG, String.format( "game loop executing for the %sth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
+			Log.i( TAG, String.format( "game loop executing for the %sth time with %d elapsed millis", fmt.format( loopcount ), elapsed ) );
 			updater.update( ((float)elapsed) / Consts.MILLIS_PER_TIME_UNIT );
 			paint();
 		}

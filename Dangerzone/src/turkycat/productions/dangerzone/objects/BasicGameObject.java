@@ -16,12 +16,12 @@ public class BasicGameObject extends GameObject implements Cloneable
 	private boolean isStatic;
 	private float velocityX;
 	private float velocityY;
-	
+
 	public BasicGameObject( PointF location, PointF dimensions, boolean isCollidable, boolean isStatic )
 	{
 		this( location, dimensions, isCollidable, isStatic, 0.0f, 0.0f );
 	}
-	
+
 	public BasicGameObject( PointF location, PointF dimensions, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
 	{
 		this.bitmap = null;
@@ -32,21 +32,21 @@ public class BasicGameObject extends GameObject implements Cloneable
 		this.velocityX = velocityX;
 		this.velocityY = velocityY;
 	}
-	
+
 	public BasicGameObject( Bitmap bitmap, PointF location, boolean isCollidable, boolean isStatic )
 	{
 		this( bitmap, location, isCollidable, isStatic, 0.0f, 0.0f );
 	}
-	
+
 	public BasicGameObject( Bitmap bitmap, PointF location, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
 	{
-		this( bitmap, location, new PointF( (bitmap == null ? 1f : bitmap.getWidth()), (bitmap == null ? 1f : bitmap.getHeight()) ), isCollidable, isStatic, velocityX, velocityY );
+		this( bitmap, location, new PointF( ( bitmap == null ? 1f : bitmap.getWidth() ), ( bitmap == null ? 1f : bitmap.getHeight() ) ), isCollidable, isStatic, velocityX, velocityY );
 	}
-	
+
 	public BasicGameObject( Bitmap bitmap, PointF location, PointF dimensions, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
 	{
 		if( bitmap == null ) throw new IllegalArgumentException( "cannot have null bitmap, use a different constructor" );
-		
+
 		this.bitmap = bitmap;
 		this.location = new PointF( location.x, location.y );
 		this.dimensions = new PointF( dimensions.x, dimensions.y );
@@ -55,12 +55,22 @@ public class BasicGameObject extends GameObject implements Cloneable
 		this.velocityX = velocityX;
 		this.velocityY = velocityY;
 	}
+	
+	public void setVelocityX( float velocity )
+	{
+		this.velocityX = velocity;
+	}
+	
+	public void setVelocityY( float velocity )
+	{
+		this.velocityX = velocity;
+	}
 
 	@Override
 	public boolean update( float units )
 	{
 		location.set( new PointF( location.x + ( velocityX * units ), location.y + ( velocityY * units ) ) );
-//		Log.d( TAG, String.format( "units: %f, velocityX: %f |*|: %f", units, velocityX, (velocityX * units) ) );
+		//		Log.d( TAG, String.format( "units: %f, velocityX: %f |*|: %f", units, velocityX, (velocityX * units) ) );
 		return true;
 	}
 
@@ -81,19 +91,17 @@ public class BasicGameObject extends GameObject implements Cloneable
 	{
 		synchronized( this )
 		{
-		if( bitmap == null ) return;
-		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) (location.x + dimensions.x), (int) (location.y + dimensions.y) ), new Paint() );
+			if( bitmap == null ) return;
+			canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) ( location.x + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
 		}
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException
+	public Object clone()
 	{
 		BasicGameObject o = (BasicGameObject) super.clone();
 		
 		o.bitmap = this.bitmap;
-		o.location = new PointF( this.location.x, this.location.y );
-		o.dimensions = new PointF( this.dimensions.x, this.dimensions.y );
 		o.isCollidable = this.isCollidable;
 		o.isStatic = this.isStatic;
 		o.velocityX = this.velocityX;
