@@ -10,21 +10,32 @@ public class GameUpdater
 {
 	private List<GameObject> objects;
 	private CollisionHandler collisionHandler;
-	
+
 	public GameUpdater()
 	{
 		objects = new LinkedList<GameObject>();
 		collisionHandler = new CollisionHandler();
-		
+
 	}
-	
+
 	public void update( float units )
 	{
-		Iterator<GameObject> iterator = objects.iterator();
-		while( iterator.hasNext() )
+		synchronized( objects )
 		{
-			iterator.next().update( units );
-			//TODO collision detection and resolution
+			Iterator<GameObject> iterator = objects.iterator();
+			while( iterator.hasNext() )
+			{
+				iterator.next().update( units );
+				//TODO collision detection and resolution
+			}
+		}
+	}
+
+	public void addObject( GameObject object )
+	{
+		synchronized( objects )
+		{
+			objects.add( object );
 		}
 	}
 }

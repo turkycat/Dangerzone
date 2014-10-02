@@ -3,7 +3,7 @@ package turkycat.productions.dangerzone.objects;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
-public abstract class GameObject
+public abstract class GameObject implements DrawableItem
 {
 	protected PointF currentPosition;
 	
@@ -50,9 +50,4 @@ public abstract class GameObject
 	 * returns true if the object will never move
 	 */
 	public abstract boolean isStatic();
-	
-	/**
-	 * tells the object to draw itself on the provided canvas
-	 */
-	public abstract void draw( Canvas canvas );
 }

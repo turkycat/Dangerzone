@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.Rect;
 
 public class BasicGameObject extends GameObject
 {
@@ -31,16 +32,28 @@ public class BasicGameObject extends GameObject
 		this.velocityY = velocityY;
 	}
 	
-	public BasicGameObject( Bitmap bitmap, boolean isCollidable, boolean isStatic )
+	public BasicGameObject( Bitmap bitmap, PointF location, boolean isCollidable, boolean isStatic )
 	{
-		this( bitmap, isCollidable, isStatic, 0.0f, 0.0f );
+		this( bitmap, location, isCollidable, isStatic, 0.0f, 0.0f );
 	}
 	
-	public BasicGameObject( Bitmap bitmap, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
+	public BasicGameObject( Bitmap bitmap, PointF location, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
+	{
+		this( bitmap, location, new PointF( (bitmap == null ? 1f : bitmap.getWidth()), (bitmap == null ? 1f : bitmap.getHeight()) ), isCollidable, isStatic, velocityX, velocityY );
+	}
+	
+	public BasicGameObject( Bitmap bitmap, PointF location, PointF dimensions, boolean isCollidable, boolean isStatic, float velocityX, float velocityY )
 	{
 		if( bitmap == null ) throw new IllegalArgumentException( "cannot have null bitmap, use a different constructor" );
 		
-		
+
+		this.bitmap = null;
+		this.location = new PointF( location.x, location.y );
+		this.dimensions = new PointF( dimensions.x, dimensions.y );
+		this.isCollidable = isCollidable;
+		this.isStatic = isStatic;
+		this.velocityX = velocityX;
+		this.velocityY = velocityY;
 	}
 
 	@Override
@@ -78,7 +91,7 @@ public class BasicGameObject extends GameObject
 	public void draw( Canvas canvas )
 	{
 		if( bitmap == null ) return;
-		
+		canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) (location.x + dimensions.x), (int) (location.y + dimensions.y) ), null ); 
 	}
 
 }
