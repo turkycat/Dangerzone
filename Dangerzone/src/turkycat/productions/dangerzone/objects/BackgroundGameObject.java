@@ -5,7 +5,6 @@ import turkycat.productions.dangerzone.ApplicationResources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Shader;
@@ -14,13 +13,6 @@ public class BackgroundGameObject extends GameObject
 {
 	
 	private final Paint paint;
-	
-	// New matrices require a native allocation. We cache ours
-	//  to reduce the amount of GC pressure.
-	//
-	//  NOTE: Might want to replace this with some sort of matrix
-	//		cache for the entire application, but works for now.
-	private final Matrix matrix;
 	
 	private float velocityX;
 	
@@ -41,8 +33,6 @@ public class BackgroundGameObject extends GameObject
 		BitmapShader shader = new BitmapShader( b, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT );
 		this.paint = new Paint();
 		this.paint.setShader( shader );
-		
-		this.matrix = new Matrix();
 		
 		this.velocityX = 0.0f;
 		
@@ -85,11 +75,14 @@ public class BackgroundGameObject extends GameObject
 	@Override
 	public void draw( Canvas canvas )
 	{
-		this.matrix.setTranslate( this.location.x, this.location.y );
+		// Save the current canvas translation to restore later
+		canvas.save();
 		
-		// Update the shader's local matrix to represent the new position.
-		this.paint.getShader().setLocalMatrix( this.matrix );
-		// This draws the entire clip region of the canvas using the given paint.
+		// Translate to our location
+		canvas.translate( this.location.x, 0);
 		canvas.drawPaint( this.paint );
+		
+		// Restore the previous canvas translations
+		canvas.restore();
 	}
 }
