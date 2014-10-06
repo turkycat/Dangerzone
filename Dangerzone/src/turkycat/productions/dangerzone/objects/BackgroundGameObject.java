@@ -1,52 +1,95 @@
 package turkycat.productions.dangerzone.objects;
 
 import turkycat.productions.dangerzone.ApplicationResources;
-import turkycat.productions.dangerzone.gameloop.Consts;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
+import android.graphics.Shader;
 
-public class BackgroundGameObject extends BasicGameObject
+public class BackgroundGameObject extends GameObject
 {
-	private final int viewWidth;
-	private final int viewHeight;
+	
+	private final Paint paint;
+	
+	// New matrices require a native allocation. We cache ours
+	//  to reduce the amount of GC pressure.
+	//
+	//  NOTE: Might want to replace this with some sort of matrix
+	//		cache for the entire application, but works for now.
+	private final Matrix matrix;
+	
+	private float velocityX;
 	
 	public BackgroundGameObject( int viewWidth, int viewHeight )
 	{
-		super(ApplicationResources.i().getBitmap( "background" ), //the image bitmap of the background
-				new PointF( 0f, 0f ), //the location relative to the upper left corner (0,0)
-				new PointF( viewWidth, viewHeight ), //the width of the background should be equal to the size of our view
-				false, //not collidable
-				true, //moves relative to the world only
-				0f, //X speed
-//				-Consts.INITIAL_GAME_SPEED, //X speed
-				0f ); //Y speed
-		this.viewWidth = viewWidth;
-		this.viewHeight = viewHeight;
+		// Resize the background bitmap to fit the device screen.
+		Bitmap b = ApplicationResources.i().getBitmap( "background" );
+		b = Bitmap.createScaledBitmap( b, viewWidth, viewHeight, false );
+		
+		this.dimensions = new PointF( b.getWidth(), b.getHeight() );
+		this.location = new PointF( 0, 0 );
+		
+		/*
+		 *  The addition of the shader to the Paint instance simulates
+		 *  	a Bitmap of "infinite" width and height where the pixel
+		 *  	locations are wrapped around.
+		 */
+		BitmapShader shader = new BitmapShader( b, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT );
+		this.paint = new Paint();
+		this.paint.setShader( shader );
+		
+		this.matrix = new Matrix();
+		
+		this.velocityX = 0.0f;
+		
 	}
 	
 	@Override
 	public boolean update( float units )
-	{
-		super.update( units );
-		velocityX -= 0.01f;
-		if( location.x < -viewWidth )
-		{
-			location = new PointF( location.x + viewWidth, location.y );
+	{	
+		// This prevents the matrix from overflowing and doesn't
+		//  need to be run every single update. 200 is an arbitrary
+		//  number that can be changed. A relatively high number should
+		//  be picked to keep us from doing expensive float division.
+		if( this.location.x <= -( this.dimensions.x * 200 ) ) {
+			this.location.x = this.location.x % this.dimensions.x;
+			
 		}
+		this.location.x += this.velocityX * units;
+		this.velocityX -= 0.01f;
 		return true;
 	}
 	
 	
+	
+	@Override
+	public void setLocation(PointF p) {
+		// The background location can not be changed outside of this class.
+		throw new RuntimeException( "Can not set background location." );
+	}
+
+	@Override
+	public boolean isCollidable() {
+		return false;
+	}
+
+	@Override
+	public boolean isStatic() {
+		return false;
+	}
+
 	@Override
 	public void draw( Canvas canvas )
 	{
-		synchronized( this )
-		{
-			if( bitmap == null ) return;
-			canvas.drawBitmap( bitmap, null, new Rect( (int) location.x, (int) location.y, (int) ( location.x + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
-			canvas.drawBitmap( bitmap, null, new Rect( (int) (location.x + viewWidth), (int) location.y, (int) ( location.x + viewWidth + dimensions.x ), (int) ( location.y + dimensions.y ) ), new Paint() );
-		}
+		this.matrix.setTranslate( this.location.x, this.location.y );
+		
+		// Update the shader's local matrix to represent the new position.
+		this.paint.getShader().setLocalMatrix( this.matrix );
+		// This draws the entire clip region of the canvas using the given paint.
+		canvas.drawPaint( this.paint );
 	}
 }
